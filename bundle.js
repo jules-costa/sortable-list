@@ -6946,6 +6946,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 var RECEIVE_TASK = exports.RECEIVE_TASK = "RECEIVE_TASK";
 var RECEIVE_TASKS = exports.RECEIVE_TASKS = "RECEIVE_TASKS";
+var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = "RECEIVE_ERRORS";
+var CLEAR_ERRORS = exports.CLEAR_ERRORS = "CLEAR_ERRORS";
+
+var receiveSingleTask = exports.receiveSingleTask = function receiveSingleTask(task) {
+  return {
+    type: RECEIVE_TASK,
+    task: task
+  };
+};
+
+var receiveAllTasks = exports.receiveAllTasks = function receiveAllTasks(tasks) {
+  return {
+    type: RECEIVE_TASKS,
+    tasks: tasks
+  };
+};
+
+var receiveErrors = exports.receiveErrors = function receiveErrors(errors) {
+  return {
+    type: RECEIVE_ERRORS,
+    errors: errors
+  };
+};
+
+var clearErrors = exports.clearErrors = function clearErrors() {
+  return {
+    type: CLEAR_ERRORS
+  };
+};
 
 /***/ }),
 /* 66 */
@@ -11022,9 +11051,12 @@ var _tasks_reducer = __webpack_require__(125);
 
 var _task_reducer = __webpack_require__(124);
 
+var _errors_reducer = __webpack_require__(307);
+
 var rootReducer = exports.rootReducer = (0, _redux.combineReducers)({
   tasks: _tasks_reducer.tasksReducer,
-  task: _task_reducer.taskReducer
+  task: _task_reducer.taskReducer,
+  errors: _errors_reducer.errorsReducer
 });
 
 /***/ }),
@@ -26242,6 +26274,34 @@ function symbolObservablePonyfill(root) {
 	}
 
 	return result;
+};
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.errorsReducer = undefined;
+
+var _task_actions = __webpack_require__(65);
+
+var errorsReducer = exports.errorsReducer = function errorsReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case _task_actions.RECEIVE_ERRORS:
+      return action.errors;
+    case _task_actions.CLEAR_ERRORS:
+      return [];
+    default:
+      return state;
+  }
 };
 
 /***/ })
