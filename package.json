@@ -1,7 +1,13 @@
 {
   "name": "sortable-list",
+  "description": "This README would normally document whatever steps are necessary to get the application up and running.",
+  "license": "ISC",
   "version": "0.1.0",
   "main": "entry.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jules-costa/sortable-list.git"
+  },
   "dependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -9,8 +15,10 @@
     "babel-preset-react": "^6.24.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
     "webpack": "^2.5.1"
   },
   "scripts": {
