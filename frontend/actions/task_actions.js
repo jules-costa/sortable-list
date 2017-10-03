@@ -3,6 +3,8 @@ export const RECEIVE_TASKS = "RECEIVE_TASKS";
 export const RECEIVE_ERRORS = "RECEIVE_ERRORS";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
+import * as APIUtil from '../util/task_util';
+
 export const receiveSingleTask = (task) => ({
   type: RECEIVE_TASK,
   task
@@ -21,3 +23,7 @@ export const receiveErrors = (errors) => ({
 export const clearErrors = () => ({
   type: CLEAR_ERRORS
 });
+
+export const fetchTasks = () => dispatch => (
+  APIUtil.fetchTaskList().then(tasks => dispatch(receiveAllTasks(tasks)))
+);
