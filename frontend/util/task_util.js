@@ -1,17 +1,27 @@
-export const fetchTaskList = () => (
-  $.ajax({
-    method: 'GET',
-    url: "http://cfassignment.herokuapp.com/julianne_costa/tasks"
-  })
-);
+export const fetchTaskList = () => {
+  let request = new XMLHttpRequest();
+  request.open('GET', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      // Success!
+      let resp = request.responseText;
+    }
+  };
 
-export const saveTaskList = (tasks) => (
-  $.ajax({
-    method: 'POST',
-    url: "http://cfassignment.herokuapp.com/julianne_costa/tasks",
-    data: {tasks}
-  })
-);
+  request.onerror = function() {
+    console.log("Timeout error");
+  };
+  request.send();
+};
+
+
+
+export const saveTaskList = (tasks) => {
+  let request = new XMLHttpRequest();
+  request.open('POST', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  request.send(tasks);
+};
 
 // export const createTask
 //

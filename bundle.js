@@ -11025,10 +11025,15 @@ var _root2 = _interopRequireDefault(_root);
 
 var _store = __webpack_require__(120);
 
+var _task_util = __webpack_require__(308);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.addEventListener('DOMContentLoaded', function () {
   var store = (0, _store.configureStore)();
+  window.fetchTaskList = _task_util.fetchTaskList;
+  window.saveTaskList = _task_util.saveTaskList;
+  window.getState = store.getState();
   var root = document.getElementById('root');
   _reactDom2.default.render(_react2.default.createElement(_root2.default, { store: store }), root);
 });
@@ -26303,6 +26308,43 @@ var errorsReducer = exports.errorsReducer = function errorsReducer() {
       return state;
   }
 };
+
+/***/ }),
+/* 308 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var fetchTaskList = exports.fetchTaskList = function fetchTaskList() {
+  var request = new XMLHttpRequest();
+  request.open('GET', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
+  request.onload = function () {
+    if (request.status >= 200 && request.status < 400) {
+      // Success!
+      var resp = request.responseText;
+    }
+  };
+
+  request.onerror = function () {
+    console.log("Timeout error");
+  };
+  request.send();
+};
+
+var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
+  var request = new XMLHttpRequest();
+  request.open('POST', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
+  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+  request.send(tasks);
+};
+
+// export const createTask
+//
+// export const destroyTask
 
 /***/ })
 /******/ ]);
