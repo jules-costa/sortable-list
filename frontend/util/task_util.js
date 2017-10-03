@@ -7,10 +7,6 @@ export const fetchTaskList = () => {
       let resp = request.responseText;
     }
   };
-
-  request.onerror = function() {
-    console.log("Timeout error");
-  };
   request.send();
 };
 
@@ -18,6 +14,7 @@ export const fetchTaskList = () => {
 
 export const saveTaskList = (tasks) => {
   let request = new XMLHttpRequest();
+  console.log(tasks);
   request.open('POST', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
   request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
   request.send(tasks);

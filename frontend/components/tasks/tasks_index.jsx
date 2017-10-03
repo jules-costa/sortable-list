@@ -10,10 +10,7 @@ export default class TasksIndex extends React.Component {
   }
 
   render() {
-
-    console.log(`props: ${this.props.tasks}`);
     return (
-
       <div>inside tasksIndex</div>
     );
   }
