@@ -12228,10 +12228,11 @@ var TasksIndex = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props.tasks);
       return _react2.default.createElement(
         'div',
         null,
-        'inside tasksIndex'
+        'inside tasks index'
       );
     }
   }]);
@@ -12301,16 +12302,15 @@ var _root = __webpack_require__(129);
 
 var _store = __webpack_require__(130);
 
+var _task_util = __webpack_require__(141);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-// import {fetchTasks} from './actions/task_actions';
-
 
 document.addEventListener('DOMContentLoaded', function () {
   var store = (0, _store.configureStore)();
-  // window.fetchTasks = fetchTasks;
   // TODO: remove from window
   window.getState = store.getState();
+  window.saveTaskList = _task_util.saveTaskList;
   var root = document.getElementById('root');
   _reactDom2.default.render(_react2.default.createElement(_root.Root, { store: store }), root);
 });
@@ -12470,28 +12470,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var fetchTaskList = exports.fetchTaskList = function fetchTaskList() {
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      // Success!
-      var resp = request.responseText;
-    }
-  };
-  request.send();
+  return $.ajax({
+    method: 'GET',
+    url: 'http://cfassignment.herokuapp.com/julianne/tasks'
+  });
 };
 
 var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
-  var request = new XMLHttpRequest();
-  console.log(tasks);
-  request.open('POST', 'http://cfassignment.herokuapp.com/julianne/tasks', true);
-  request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-  request.send(tasks);
+  return $.ajax({
+    method: 'POST',
+    url: 'http://cfassignment.herokuapp.com/julianne/tasks',
+    data: tasks
+  });
 };
-
-// export const createTask
-//
-// export const destroyTask
 
 /***/ }),
 /* 142 */

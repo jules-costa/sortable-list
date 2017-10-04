@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom';
 import { Root } from './components/root';
 import { configureStore } from './store/store';
 
-// import {fetchTasks} from './actions/task_actions';
-
+import { saveTaskList } from './util/task_util';
 
 document.addEventListener('DOMContentLoaded', () => {
   let store = configureStore();
-  // window.fetchTasks = fetchTasks;
   // TODO: remove from window
   window.getState = store.getState();
+  window.saveTaskList = saveTaskList;
   let root = document.getElementById('root');
   ReactDOM.render(<Root store={ store }/>, root);
 });
