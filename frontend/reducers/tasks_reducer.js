@@ -6,9 +6,6 @@ export const tasksReducer = (state = [], action) => {
   switch (action.type) {
     case RECEIVE_TASKS:
       return action.tasks.tasks;
-    case RECEIVE_TASK:
-      const newTask = {[action.task.id]: action.task};
-      return merge({}, state, newTask);
     default:
       return state;
   }

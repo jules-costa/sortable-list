@@ -3554,7 +3554,7 @@ module.exports = SyntheticUIEvent;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createTask = exports.fetchTasks = exports.clearErrors = exports.receiveErrors = exports.receiveAllTasks = exports.receiveSingleTask = exports.CLEAR_ERRORS = exports.RECEIVE_ERRORS = exports.RECEIVE_TASKS = exports.RECEIVE_TASK = undefined;
+exports.saveTasks = exports.fetchTasks = exports.clearErrors = exports.receiveErrors = exports.receiveAllTasks = exports.CLEAR_ERRORS = exports.RECEIVE_ERRORS = exports.RECEIVE_TASKS = exports.RECEIVE_TASK = undefined;
 
 var _task_util = __webpack_require__(71);
 
@@ -3567,12 +3567,10 @@ var RECEIVE_TASKS = exports.RECEIVE_TASKS = "RECEIVE_TASKS";
 var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = "RECEIVE_ERRORS";
 var CLEAR_ERRORS = exports.CLEAR_ERRORS = "CLEAR_ERRORS";
 
-var receiveSingleTask = exports.receiveSingleTask = function receiveSingleTask(task) {
-  return {
-    type: RECEIVE_TASK,
-    task: task
-  };
-};
+// export const receiveSingleTask = (task) => ({
+//   type: RECEIVE_TASK,
+//   task
+// });
 
 var receiveAllTasks = exports.receiveAllTasks = function receiveAllTasks(tasks) {
   return {
@@ -3602,16 +3600,20 @@ var fetchTasks = exports.fetchTasks = function fetchTasks() {
   };
 };
 
-var createTask = exports.createTask = function createTask(newTask) {
+var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
   return function (dispatch) {
-    return APIUtil.saveTask(newTask).then(function (task) {
-      dispatch(receiveSingleTask(task));
-      dispatch(clearErrors());
-    }).fail(function (err) {
-      return dispatch(receiveErrors(err.responseJSON));
+    return APIUtil.saveTaskList(allTasks).then(function (tasks) {
+      return dispatch(receiveAllTasks(tasks));
     });
   };
 };
+
+// export const createTask = (newTask) => dispatch => (
+//   APIUtil.saveTask(newTask).then(tasks => {
+//     dispatch(receiveSingleTask(tasks));
+//     dispatch(clearErrors());
+//   }).fail(err => dispatch(receiveErrors(err.responseJSON)))
+// );
 
 /***/ }),
 /* 29 */
@@ -7208,13 +7210,13 @@ var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
   });
 };
 
-var saveTask = exports.saveTask = function saveTask(task) {
-  return $.ajax({
-    method: 'POST',
-    url: 'http://cfassignment.herokuapp.com/julianne/tasks',
-    data: { task: task }
-  });
-};
+// export const saveTask = (task) => (
+//   $.ajax({
+//     method: 'POST',
+//     url: 'http://cfassignment.herokuapp.com/julianne/tasks',
+//     data: {task}
+//   })
+// );
 
 /***/ }),
 /* 72 */
@@ -12328,7 +12330,9 @@ var TasksIndex = function (_React$Component) {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       e.preventDefault();
-      this.props.createTask({ title: this.state.title }).then(this.setState({
+      var allTasks = this.props.tasks.push(this.state);
+      console.log(allTasks);
+      this.props.saveTasks(allTasks).then(this.setState({
         title: ""
       }));
     }
@@ -12344,7 +12348,6 @@ var TasksIndex = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log(this.props.tasks);
       var tasks = this.props.tasks;
 
       return _react2.default.createElement(
@@ -12413,8 +12416,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     fetchTasks: function fetchTasks() {
       return dispatch((0, _task_actions.fetchTasks)());
     },
-    createTask: function createTask(task) {
-      return dispatch((0, _task_actions.createTask)(task));
+    saveTasks: function saveTasks(tasks) {
+      return dispatch((0, _task_actions.saveTasks)(tasks));
     }
   };
 };
@@ -12529,7 +12532,7 @@ var _errors_reducer = __webpack_require__(138);
 
 var rootReducer = exports.rootReducer = (0, _redux.combineReducers)({
   tasks: _tasks_reducer.tasksReducer,
-  task: _task_reducer.taskReducer,
+  // task: taskReducer,
   errors: _errors_reducer.errorsReducer
 });
 
@@ -12580,8 +12583,6 @@ var _merge2 = _interopRequireDefault(_merge);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 var tasksReducer = exports.tasksReducer = function tasksReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments[1];
@@ -12590,9 +12591,6 @@ var tasksReducer = exports.tasksReducer = function tasksReducer() {
   switch (action.type) {
     case _task_actions.RECEIVE_TASKS:
       return action.tasks.tasks;
-    case _task_actions.RECEIVE_TASK:
-      var newTask = _defineProperty({}, action.task.id, action.task);
-      return (0, _merge2.default)({}, state, newTask);
     default:
       return state;
   }

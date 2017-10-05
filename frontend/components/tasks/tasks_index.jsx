@@ -17,7 +17,9 @@ export default class TasksIndex extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.createTask({title: this.state.title})
+    let allTasks = this.props.tasks.push(this.state);
+    console.log(allTasks);
+    this.props.saveTasks(allTasks)
     .then(this.setState({
       title: "",
     }));
@@ -28,7 +30,6 @@ export default class TasksIndex extends React.Component {
   }
 
   render() {
-    console.log(this.props.tasks);
     const { tasks } = this.props;
     return (
       <section className="tasks-list-container">

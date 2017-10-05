@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import TasksIndex from './tasks_index';
 import values from 'lodash/values';
-import { fetchTasks, createTask } from '../../actions/task_actions';
+import { fetchTasks, saveTasks } from '../../actions/task_actions';
 
 const mapStateToProps = (state) => ({
   tasks: state.tasks
@@ -9,7 +9,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   fetchTasks: () => dispatch(fetchTasks()),
-  createTask: (task) => dispatch(createTask(task))
+  saveTasks: (tasks) => dispatch(saveTasks(tasks))
 });
 
 export default connect(

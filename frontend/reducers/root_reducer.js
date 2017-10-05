@@ -5,6 +5,6 @@ import { errorsReducer } from './errors_reducer';
 
 export const rootReducer = combineReducers({
   tasks: tasksReducer,
-  task: taskReducer,
+  // task: taskReducer,
   errors: errorsReducer
 });
