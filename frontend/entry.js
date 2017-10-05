@@ -8,7 +8,7 @@ import { saveTaskList } from './util/task_util';
 document.addEventListener('DOMContentLoaded', () => {
   let store = configureStore();
   // TODO: remove from window
-  window.getState = store.getState();
+  window.getState = store.getState;
   window.saveTaskList = saveTaskList;
   let root = document.getElementById('root');
   ReactDOM.render(<Root store={ store }/>, root);

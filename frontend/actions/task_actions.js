@@ -5,11 +5,6 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 import * as APIUtil from '../util/task_util';
 
-// export const receiveSingleTask = (task) => ({
-//   type: RECEIVE_TASK,
-//   task
-// });
-
 export const receiveAllTasks = (tasks) => ({
   type: RECEIVE_TASKS,
   tasks
@@ -28,13 +23,12 @@ export const fetchTasks = () => dispatch => (
   APIUtil.fetchTaskList().then(tasks => dispatch(receiveAllTasks(tasks)))
 );
 
-export const saveTasks = (allTasks) => dispatch => (
-  APIUtil.saveTaskList(allTasks).then(tasks => dispatch(receiveAllTasks(tasks)))
-);
+export const saveTasks = (allTasks) => dispatch => {
+  APIUtil.saveTaskList(allTasks).then(tasks => {
+    dispatch(receiveAllTasks(tasks));
+    // console.log(tasks);
+    // return tasks;
+  });
+};
 
-// export const createTask = (newTask) => dispatch => (
-//   APIUtil.saveTask(newTask).then(tasks => {
-//     dispatch(receiveSingleTask(tasks));
-//     dispatch(clearErrors());
-//   }).fail(err => dispatch(receiveErrors(err.responseJSON)))
-// );
+// recursively call thunk action creator on fail

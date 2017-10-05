@@ -3567,11 +3567,6 @@ var RECEIVE_TASKS = exports.RECEIVE_TASKS = "RECEIVE_TASKS";
 var RECEIVE_ERRORS = exports.RECEIVE_ERRORS = "RECEIVE_ERRORS";
 var CLEAR_ERRORS = exports.CLEAR_ERRORS = "CLEAR_ERRORS";
 
-// export const receiveSingleTask = (task) => ({
-//   type: RECEIVE_TASK,
-//   task
-// });
-
 var receiveAllTasks = exports.receiveAllTasks = function receiveAllTasks(tasks) {
   return {
     type: RECEIVE_TASKS,
@@ -3602,18 +3597,15 @@ var fetchTasks = exports.fetchTasks = function fetchTasks() {
 
 var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
   return function (dispatch) {
-    return APIUtil.saveTaskList(allTasks).then(function (tasks) {
-      return dispatch(receiveAllTasks(tasks));
+    APIUtil.saveTaskList(allTasks).then(function (tasks) {
+      dispatch(receiveAllTasks(tasks));
+      // console.log(tasks);
+      // return tasks;
     });
   };
 };
 
-// export const createTask = (newTask) => dispatch => (
-//   APIUtil.saveTask(newTask).then(tasks => {
-//     dispatch(receiveSingleTask(tasks));
-//     dispatch(clearErrors());
-//   }).fail(err => dispatch(receiveErrors(err.responseJSON)))
-// );
+// recursively call thunk action creator on fail
 
 /***/ }),
 /* 29 */
@@ -7198,25 +7190,17 @@ Object.defineProperty(exports, "__esModule", {
 var fetchTaskList = exports.fetchTaskList = function fetchTaskList() {
   return $.ajax({
     method: 'GET',
-    url: 'http://cfassignment.herokuapp.com/julianne/tasks'
+    url: 'https://cfassignment.herokuapp.com/julianne/tasks'
   });
 };
 
 var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
   return $.ajax({
     method: 'POST',
-    url: 'http://cfassignment.herokuapp.com/julianne/tasks',
-    data: { tasks: tasks }
+    url: 'https://cfassignment.herokuapp.com/julianne/tasks',
+    data: JSON.stringify({ tasks: tasks })
   });
 };
-
-// export const saveTask = (task) => (
-//   $.ajax({
-//     method: 'POST',
-//     url: 'http://cfassignment.herokuapp.com/julianne/tasks',
-//     data: {task}
-//   })
-// );
 
 /***/ }),
 /* 72 */
@@ -12299,6 +12283,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -12314,8 +12300,10 @@ var TasksIndex = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (TasksIndex.__proto__ || Object.getPrototypeOf(TasksIndex)).call(this, props));
 
     _this.state = {
+      tasks: [],
       title: ""
     };
+    _this.addTask = _this.addTask.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.update = _this.update.bind(_this);
     return _this;
@@ -12324,26 +12312,51 @@ var TasksIndex = function (_React$Component) {
   _createClass(TasksIndex, [{
     key: 'componentWillMount',
     value: function componentWillMount() {
-      this.props.fetchTasks();
-    }
-  }, {
-    key: 'handleSubmit',
-    value: function handleSubmit(e) {
-      e.preventDefault();
-      var allTasks = this.props.tasks.push(this.state);
-      console.log(allTasks);
-      this.props.saveTasks(allTasks).then(this.setState({
-        title: ""
-      }));
+      var _this2 = this;
+
+      this.props.fetchTasks().then(function (tasks) {
+        return _this2.setState({
+          tasks: [].concat(_toConsumableArray(_this2.props.tasks))
+        });
+      });
     }
   }, {
     key: 'update',
     value: function update(field) {
-      var _this2 = this;
+      var _this3 = this;
 
       return function (e) {
-        return _this2.setState(_defineProperty({}, field, e.target.value));
+        return _this3.setState(_defineProperty({}, field, e.target.value));
       };
+    }
+  }, {
+    key: 'addTask',
+    value: function addTask(e) {
+      e.preventDefault();
+      // debugger;
+      var newTask = { title: this.state.title };
+      // this.state.names.push(this.state.username);
+      //  console.log(this.state);
+      //  this.props.add([this.state]);
+      this.setState({
+        tasks: this.state.tasks.concat([newTask])
+      });
+    }
+    //
+    // componentDidUpdate() {
+    //   this.forceUpdate.bind(this);
+    // }
+
+  }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      var allTasks = this.state.tasks;
+      console.log(allTasks);
+      this.props.saveTasks(allTasks);
+      //   // .then(this.setState({
+      //   //   title: "",
+      //   // }));
     }
   }, {
     key: 'render',
@@ -12361,15 +12374,20 @@ var TasksIndex = function (_React$Component) {
           onChange: this.update('title') }),
         _react2.default.createElement(
           'button',
+          { className: 'new-task-button', onClick: this.addTask },
+          'Add Task'
+        ),
+        _react2.default.createElement(
+          'button',
           { className: 'new-task-button', onClick: this.handleSubmit },
-          'Add'
+          'Save'
         ),
         _react2.default.createElement(
           'ul',
           { className: 'tasks-list' },
-          this.props.tasks.map(function (task, i) {
-            return _react2.default.createElement(_task_index_item2.default, { key: task.id, task: task });
-          })
+          this.state.tasks ? this.state.tasks.map(function (task, i) {
+            return _react2.default.createElement(_task_index_item2.default, { key: task.title, task: task });
+          }) : ""
         )
       );
     }
@@ -12450,7 +12468,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 document.addEventListener('DOMContentLoaded', function () {
   var store = (0, _store.configureStore)();
   // TODO: remove from window
-  window.getState = store.getState();
+  window.getState = store.getState;
   window.saveTaskList = _task_util.saveTaskList;
   var root = document.getElementById('root');
   _reactDom2.default.render(_react2.default.createElement(_root.Root, { store: store }), root);
@@ -12526,44 +12544,15 @@ var _redux = __webpack_require__(69);
 
 var _tasks_reducer = __webpack_require__(141);
 
-var _task_reducer = __webpack_require__(140);
-
 var _errors_reducer = __webpack_require__(138);
 
 var rootReducer = exports.rootReducer = (0, _redux.combineReducers)({
   tasks: _tasks_reducer.tasksReducer,
-  // task: taskReducer,
   errors: _errors_reducer.errorsReducer
 });
 
 /***/ }),
-/* 140 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.taskReducer = undefined;
-
-var _task_actions = __webpack_require__(28);
-
-var taskReducer = exports.taskReducer = function taskReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var action = arguments[1];
-
-  Object.freeze(state);
-  switch (action.type) {
-    case _task_actions.RECEIVE_TASK:
-      return action.task;
-    default:
-      return state;
-  }
-};
-
-/***/ }),
+/* 140 */,
 /* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -28118,18 +28107,31 @@ var TaskIndexItem = function (_React$Component) {
   function TaskIndexItem(props) {
     _classCallCheck(this, TaskIndexItem);
 
-    return _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
+
+    _this.deleteTask = _this.deleteTask.bind(_this);
+    return _this;
   }
 
   _createClass(TaskIndexItem, [{
-    key: 'render',
+    key: "deleteTask",
+    value: function deleteTask(e) {
+      e.preventDefault();
+    }
+  }, {
+    key: "render",
     value: function render() {
       var task = this.props.task;
 
       return _react2.default.createElement(
-        'li',
+        "li",
         null,
-        task.title
+        task.title,
+        _react2.default.createElement(
+          "button",
+          { className: "delete-button", onClick: this.deleteTask },
+          _react2.default.createElement("i", { className: "fa fa-trash-o", "aria-hidden": "true" })
+        )
       );
     }
   }]);
