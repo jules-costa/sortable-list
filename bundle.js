@@ -3554,7 +3554,7 @@ module.exports = SyntheticUIEvent;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchTasks = exports.clearErrors = exports.receiveErrors = exports.receiveAllTasks = exports.receiveSingleTask = exports.CLEAR_ERRORS = exports.RECEIVE_ERRORS = exports.RECEIVE_TASKS = exports.RECEIVE_TASK = undefined;
+exports.createTask = exports.fetchTasks = exports.clearErrors = exports.receiveErrors = exports.receiveAllTasks = exports.receiveSingleTask = exports.CLEAR_ERRORS = exports.RECEIVE_ERRORS = exports.RECEIVE_TASKS = exports.RECEIVE_TASK = undefined;
 
 var _task_util = __webpack_require__(71);
 
@@ -3598,6 +3598,17 @@ var fetchTasks = exports.fetchTasks = function fetchTasks() {
   return function (dispatch) {
     return APIUtil.fetchTaskList().then(function (tasks) {
       return dispatch(receiveAllTasks(tasks));
+    });
+  };
+};
+
+var createTask = exports.createTask = function createTask(newTask) {
+  return function (dispatch) {
+    return APIUtil.saveTask(newTask).then(function (task) {
+      dispatch(receiveSingleTask(task));
+      dispatch(clearErrors());
+    }).fail(function (err) {
+      return dispatch(receiveErrors(err.responseJSON));
     });
   };
 };
@@ -7193,7 +7204,15 @@ var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
   return $.ajax({
     method: 'POST',
     url: 'http://cfassignment.herokuapp.com/julianne/tasks',
-    data: JSON.stringify({ tasks: tasks })
+    data: { tasks: tasks }
+  });
+};
+
+var saveTask = exports.saveTask = function saveTask(task) {
+  return $.ajax({
+    method: 'POST',
+    url: 'http://cfassignment.herokuapp.com/julianne/tasks',
+    data: { task: task }
   });
 };
 
@@ -12276,6 +12295,8 @@ var _task_index_item2 = _interopRequireDefault(_task_index_item);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -12288,7 +12309,14 @@ var TasksIndex = function (_React$Component) {
   function TasksIndex(props) {
     _classCallCheck(this, TasksIndex);
 
-    return _possibleConstructorReturn(this, (TasksIndex.__proto__ || Object.getPrototypeOf(TasksIndex)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TasksIndex.__proto__ || Object.getPrototypeOf(TasksIndex)).call(this, props));
+
+    _this.state = {
+      title: ""
+    };
+    _this.handleSubmit = _this.handleSubmit.bind(_this);
+    _this.update = _this.update.bind(_this);
+    return _this;
   }
 
   _createClass(TasksIndex, [{
@@ -12297,17 +12325,49 @@ var TasksIndex = function (_React$Component) {
       this.props.fetchTasks();
     }
   }, {
+    key: 'handleSubmit',
+    value: function handleSubmit(e) {
+      e.preventDefault();
+      this.props.createTask({ title: this.state.title }).then(this.setState({
+        title: ""
+      }));
+    }
+  }, {
+    key: 'update',
+    value: function update(field) {
+      var _this2 = this;
+
+      return function (e) {
+        return _this2.setState(_defineProperty({}, field, e.target.value));
+      };
+    }
+  }, {
     key: 'render',
     value: function render() {
       console.log(this.props.tasks);
       var tasks = this.props.tasks;
 
       return _react2.default.createElement(
-        'ul',
-        { className: 'tasks-list' },
-        this.props.tasks.map(function (task, i) {
-          return _react2.default.createElement(_task_index_item2.default, { key: task.id, task: task });
-        })
+        'section',
+        { className: 'tasks-list-container' },
+        _react2.default.createElement('textarea', {
+          type: 'text',
+          className: 'new-task',
+          placeholder: 'New task',
+          value: this.state.title,
+          onChange: this.update('title') }),
+        _react2.default.createElement(
+          'button',
+          { className: 'new-task-button', onClick: this.handleSubmit },
+          'Add'
+        ),
+        _react2.default.createElement(
+          'ul',
+          { className: 'tasks-list' },
+          this.props.tasks.map(function (task, i) {
+            return _react2.default.createElement(_task_index_item2.default, { key: task.id, task: task });
+          })
+        )
       );
     }
   }]);
@@ -12352,6 +12412,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchTasks: function fetchTasks() {
       return dispatch((0, _task_actions.fetchTasks)());
+    },
+    createTask: function createTask(task) {
+      return dispatch((0, _task_actions.createTask)(task));
     }
   };
 };
@@ -12433,6 +12496,7 @@ var errorsReducer = exports.errorsReducer = function errorsReducer() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
   var action = arguments[1];
 
+  Object.freeze(state);
   switch (action.type) {
     case _task_actions.RECEIVE_ERRORS:
       return action.errors;

@@ -9,6 +9,14 @@ export const saveTaskList = (tasks) => (
   $.ajax({
     method: 'POST',
     url: 'http://cfassignment.herokuapp.com/julianne/tasks',
-    data: JSON.stringify({tasks})
+    data: {tasks}
+  })
+);
+
+export const saveTask = (task) => (
+  $.ajax({
+    method: 'POST',
+    url: 'http://cfassignment.herokuapp.com/julianne/tasks',
+    data: {task}
   })
 );

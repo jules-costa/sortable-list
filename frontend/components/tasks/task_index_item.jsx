@@ -12,7 +12,6 @@ export default class TaskIndexItem extends React.Component {
         {task.title}
       </li>
 
-
     );
   }
 }

@@ -27,3 +27,10 @@ export const clearErrors = () => ({
 export const fetchTasks = () => dispatch => (
   APIUtil.fetchTaskList().then(tasks => dispatch(receiveAllTasks(tasks)))
 );
+
+export const createTask = (newTask) => dispatch => (
+  APIUtil.saveTask(newTask).then(task => {
+    dispatch(receiveSingleTask(task));
+    dispatch(clearErrors());
+  }).fail(err => dispatch(receiveErrors(err.responseJSON)))
+);
