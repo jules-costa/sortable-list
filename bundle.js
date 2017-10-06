@@ -14899,7 +14899,7 @@ var TasksIndex = function (_React$Component) {
           alert: true,
           message: "failure"
         });
-      } else if (this.props.tasks.length !== nextProps.tasks.length) {
+      } else if (JSON.stringify(this.props.tasks) !== JSON.stringify(nextProps.tasks)) {
         this.setState({
           alert: true,
           message: "success!"
