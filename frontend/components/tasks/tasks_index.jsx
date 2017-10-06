@@ -82,6 +82,9 @@ class TasksIndex extends React.Component {
     e.preventDefault();
     let allTasks = this.state.tasks;
     this.props.saveTasks(allTasks);
+    this.setState({
+      disabled: true
+    });
   }
 
   hideAlert(e) {
@@ -89,8 +92,7 @@ class TasksIndex extends React.Component {
     e.target.parentElement.style.display='none';
     this.setState({
       alert: false,
-      message: "",
-      disabled: true
+      message: ""
     });
   }
 
@@ -108,8 +110,8 @@ class TasksIndex extends React.Component {
 
   displayAlert(message) {
     return(
-      <div className="alert">
-        <span className="closebtn" onClick={this.hideAlert}>&times;</span>
+      <div className={`alert ${message}`}>
+        <span className={`closebtn ${message}`} onClick={this.hideAlert}>&times;</span>
         {`${message}`}
       </div>
     );

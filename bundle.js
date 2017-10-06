@@ -14946,6 +14946,9 @@ var TasksIndex = function (_React$Component) {
       e.preventDefault();
       var allTasks = this.state.tasks;
       this.props.saveTasks(allTasks);
+      this.setState({
+        disabled: true
+      });
     }
   }, {
     key: 'hideAlert',
@@ -14954,8 +14957,7 @@ var TasksIndex = function (_React$Component) {
       e.target.parentElement.style.display = 'none';
       this.setState({
         alert: false,
-        message: "",
-        disabled: true
+        message: ""
       });
     }
   }, {
@@ -14978,10 +14980,10 @@ var TasksIndex = function (_React$Component) {
     value: function displayAlert(message) {
       return _react2.default.createElement(
         'div',
-        { className: 'alert' },
+        { className: 'alert ' + message },
         _react2.default.createElement(
           'span',
-          { className: 'closebtn', onClick: this.hideAlert },
+          { className: 'closebtn ' + message, onClick: this.hideAlert },
           '\xD7'
         ),
         '' + message
