@@ -14745,8 +14745,17 @@ var TaskIndexItem = function (_React$Component) {
   function TaskIndexItem(props) {
     _classCallCheck(this, TaskIndexItem);
 
-    return _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
+
+    _this.state = {
+      title: ""
+    };
+    return _this;
   }
+
+  // componentWillUpdate() {
+  //   this.textInput.focus();
+  // }
 
   _createClass(TaskIndexItem, [{
     key: 'render',
@@ -14772,7 +14781,8 @@ var TaskIndexItem = function (_React$Component) {
           'div',
           { className: 'left-content' },
           _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true' }),
-          task.title
+          task.title === "" ? _react2.default.createElement('input', {
+            onChange: this.props.update('title') }) : task.title
         ),
         _react2.default.createElement(
           'button',
@@ -14930,17 +14940,6 @@ var TasksIndex = function (_React$Component) {
       });
     }
   }, {
-    key: 'addTask',
-    value: function addTask(e) {
-      e.preventDefault();
-      var newTask = { title: this.state.title };
-      this.setState({
-        tasks: [newTask].concat(this.state.tasks),
-        disabled: false,
-        title: ""
-      });
-    }
-  }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       e.preventDefault();
@@ -14988,6 +14987,17 @@ var TasksIndex = function (_React$Component) {
       );
     }
   }, {
+    key: 'addTask',
+    value: function addTask(e) {
+      e.preventDefault();
+      var newTask = { title: this.state.title };
+      this.setState({
+        tasks: [newTask].concat(this.state.tasks),
+        disabled: false,
+        title: ""
+      });
+    }
+  }, {
     key: 'render',
     value: function render() {
       var _this4 = this;
@@ -15004,25 +15014,25 @@ var TasksIndex = function (_React$Component) {
             null,
             'Tasks'
           ),
-          _react2.default.createElement('textarea', {
+          _react2.default.createElement(
+            'button',
+            { className: 'task-button save-button', disabled: this.state.disabled, onClick: this.handleSubmit },
+            'Save'
+          )
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'new-task-form' },
+          _react2.default.createElement('input', {
             type: 'text',
             className: 'new-task',
             placeholder: 'New task',
             value: this.state.title,
             onChange: this.update('title') }),
           _react2.default.createElement(
-            'div',
-            { className: 'buttons' },
-            _react2.default.createElement(
-              'button',
-              { className: 'task-button', onClick: this.addTask },
-              'Add Task'
-            ),
-            _react2.default.createElement(
-              'button',
-              { className: 'task-button save-button', disabled: this.state.disabled, onClick: this.handleSubmit },
-              'Save'
-            )
+            'button',
+            { className: 'task-button', onClick: this.addTask },
+            'Add Task'
           )
         ),
         this.renderErrors(),
@@ -15036,7 +15046,8 @@ var TasksIndex = function (_React$Component) {
               task: task,
               tasks: _this4.props.tasks,
               deleteTask: _this4.deleteTask.bind(_this4),
-              moveTask: _this4.moveTask
+              moveTask: _this4.moveTask,
+              update: _this4.update.bind(_this4)
             });
           }) : ""
         ),

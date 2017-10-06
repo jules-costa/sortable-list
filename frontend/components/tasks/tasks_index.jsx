@@ -76,15 +76,6 @@ class TasksIndex extends React.Component {
     });
   }
 
-  addTask(e) {
-    e.preventDefault();
-    let newTask = {title: this.state.title};
-    this.setState({
-      tasks: [newTask].concat(this.state.tasks),
-      disabled: false,
-      title: ""
-    });
-  }
 
   handleSubmit(e) {
     e.preventDefault();
@@ -123,23 +114,33 @@ class TasksIndex extends React.Component {
     );
   }
 
+  addTask(e) {
+    e.preventDefault();
+    let newTask = {title: this.state.title};
+    this.setState({
+      tasks: [newTask].concat(this.state.tasks),
+      disabled: false,
+      title: ""
+    });
+  }
+
   render() {
     return (
       <section className="tasks-list-container">
         <div className="banner"></div>
         <div className="navbar">
           <h1>Tasks</h1>
-          <textarea
+          <button className="task-button save-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
+        </div>
+        <div className="new-task-form">
+          <input
             type="text"
             className="new-task"
             placeholder="New task"
             value={this.state.title}
             onChange={this.update('title')}>
-          </textarea>
-          <div className="buttons">
-            <button className="task-button" onClick={this.addTask}>Add Task</button>
-            <button className="task-button save-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
-          </div>
+          </input>
+          <button className="task-button" onClick={this.addTask}>Add Task</button>
         </div>
         {this.renderErrors()}
         <ul className="tasks-list">
@@ -151,6 +152,7 @@ class TasksIndex extends React.Component {
               tasks={this.props.tasks}
               deleteTask={this.deleteTask.bind(this)}
               moveTask={this.moveTask}
+              update={this.update.bind(this)}
               />
           ) : ""}
         </ul>

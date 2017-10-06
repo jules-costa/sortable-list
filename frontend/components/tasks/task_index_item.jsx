@@ -41,7 +41,14 @@ const taskTarget = {
 class TaskIndexItem extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      title: ""
+    };
   }
+
+  // componentWillUpdate() {
+  //   this.textInput.focus();
+  // }
 
   render() {
     const { task, index, connectDragSource, isDragging, connectDropTarget } = this.props;
@@ -54,7 +61,10 @@ class TaskIndexItem extends React.Component {
       }}>
         <div className="left-content">
           <i className="fa fa-bars" aria-hidden="true"></i>
-          {task.title}
+          {task.title === "" ?
+            <input
+              onChange={this.props.update('title')}>
+            </input> : task.title}
         </div>
         <button className="delete-button" onClick={() => this.props.deleteTask(index)}>
           <i className="fa fa-trash-o" aria-hidden="true"></i>

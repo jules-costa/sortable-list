@@ -14,6 +14,9 @@ span {
   box-sizing: inherit;
 }
 
+body {
+  background-color: #f4f6f7;
+}
 ul {
   list-style: none;
 }
@@ -40,14 +43,14 @@ button {
   flex-direction: column;
   margin: 0 auto;
   align-items: center;
-  background-color: aliceblue;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   width: 500px;
-  align-items: flex-end;
+  align-items: center;
+  margin: 20px 0;
 }
 
 .tasks-list {
@@ -72,8 +75,9 @@ button {
 .new-task {
   border: 1px solid lightgrey;
   border-radius: 4px;
+  font-size: 14px;
   width: 250px;
-  padding: 6px 0 0 6px;
+  padding: 8px 12px;
 }
 
 .buttons {
@@ -81,7 +85,6 @@ button {
   flex-direction: row;
   justify-content: space-between;
   min-width: 130px;
-  margin-top: 20px;
 }
 
 .task-button {
@@ -153,4 +156,10 @@ button {
   width: 100%;
   background-color: #2b3238;
   height: 38px;
+}
+
+.new-task-form {
+  display: flex;
+  justify-content: space-between;
+  min-width: 360px;
 }
