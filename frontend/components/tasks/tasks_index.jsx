@@ -6,11 +6,13 @@ export default class TasksIndex extends React.Component {
     super(props);
     this.state = {
       tasks: [],
-      title: ""
+      title: "",
+      disabled: true
     };
     this.addTask = this.addTask.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.update = this.update.bind(this);
+    this.hideAlert = this.hideAlert.bind(this);
   }
 
   componentWillMount() {
@@ -30,7 +32,8 @@ export default class TasksIndex extends React.Component {
     console.log(this.state.tasks);
     this.state.tasks.splice(taskIndex, 1);
     this.setState({
-      tasks: this.state.tasks
+      tasks: this.state.tasks,
+      disabled: false
     });
   }
 
@@ -38,8 +41,10 @@ export default class TasksIndex extends React.Component {
     e.preventDefault();
     let newTask = {title: this.state.title};
     this.setState({
-      tasks: this.state.tasks.concat([newTask])
+      tasks: [newTask].concat(this.state.tasks),
+      disabled: false
     });
+
   }
 
   handleSubmit(e) {
@@ -48,6 +53,10 @@ export default class TasksIndex extends React.Component {
     this.props.saveTasks(allTasks);
   }
 
+  hideAlert(e) {
+    e.preventDefault();
+    e.target.parentElement.style.display='none';
+  }
 
   render() {
     return (
@@ -60,13 +69,17 @@ export default class TasksIndex extends React.Component {
           onChange={this.update('title')}>
         </textarea>
         <button className="new-task-button" onClick={this.addTask}>Add Task</button>
-        <button className="new-task-button" onClick={this.handleSubmit}>Save</button>
+        <button className="new-task-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
 
         <ul className="tasks-list">
           {this.state.tasks ? this.state.tasks.map((task, i) =>
             <TaskIndexItem key={task.title} index={i} task={task} tasks={this.props.tasks} deleteTask={this.deleteTask.bind(this)}/>
           ) : ""}
         </ul>
+        <div className="alert">
+          <span className="closebtn" onClick={this.hideAlert}>&times;</span>
+          This is an alert box.
+        </div>
       </section>
     );
   }

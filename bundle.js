@@ -3601,8 +3601,10 @@ var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
   return function (dispatch) {
     return APIUtil.saveTaskList(allTasks).then(function (tasks) {
       dispatch(receiveAllTasks(tasks));
+      alert("Success!");
     }, function (err) {
-      return dispatch(saveTasks(allTasks));
+      dispatch(saveTasks(allTasks));
+      alert("Failure");
     });
   };
 };
@@ -12303,11 +12305,13 @@ var TasksIndex = function (_React$Component) {
 
     _this.state = {
       tasks: [],
-      title: ""
+      title: "",
+      disabled: true
     };
     _this.addTask = _this.addTask.bind(_this);
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.update = _this.update.bind(_this);
+    _this.hideAlert = _this.hideAlert.bind(_this);
     return _this;
   }
 
@@ -12338,7 +12342,8 @@ var TasksIndex = function (_React$Component) {
       console.log(this.state.tasks);
       this.state.tasks.splice(taskIndex, 1);
       this.setState({
-        tasks: this.state.tasks
+        tasks: this.state.tasks,
+        disabled: false
       });
     }
   }, {
@@ -12347,7 +12352,8 @@ var TasksIndex = function (_React$Component) {
       e.preventDefault();
       var newTask = { title: this.state.title };
       this.setState({
-        tasks: this.state.tasks.concat([newTask])
+        tasks: [newTask].concat(this.state.tasks),
+        disabled: false
       });
     }
   }, {
@@ -12356,6 +12362,12 @@ var TasksIndex = function (_React$Component) {
       e.preventDefault();
       var allTasks = this.state.tasks;
       this.props.saveTasks(allTasks);
+    }
+  }, {
+    key: 'hideAlert',
+    value: function hideAlert(e) {
+      e.preventDefault();
+      e.target.parentElement.style.display = 'none';
     }
   }, {
     key: 'render',
@@ -12378,7 +12390,7 @@ var TasksIndex = function (_React$Component) {
         ),
         _react2.default.createElement(
           'button',
-          { className: 'new-task-button', onClick: this.handleSubmit },
+          { className: 'new-task-button', disabled: this.state.disabled, onClick: this.handleSubmit },
           'Save'
         ),
         _react2.default.createElement(
@@ -12387,6 +12399,16 @@ var TasksIndex = function (_React$Component) {
           this.state.tasks ? this.state.tasks.map(function (task, i) {
             return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this4.props.tasks, deleteTask: _this4.deleteTask.bind(_this4) });
           }) : ""
+        ),
+        _react2.default.createElement(
+          'div',
+          { className: 'alert' },
+          _react2.default.createElement(
+            'span',
+            { className: 'closebtn', onClick: this.hideAlert },
+            '\xD7'
+          ),
+          'This is an alert box.'
         )
       );
     }
@@ -12460,15 +12482,12 @@ var _root = __webpack_require__(130);
 
 var _store = __webpack_require__(131);
 
-var _task_util = __webpack_require__(71);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 document.addEventListener('DOMContentLoaded', function () {
   var store = (0, _store.configureStore)();
   // TODO: remove from window
   window.getState = store.getState;
-  window.saveTaskList = _task_util.saveTaskList;
   var root = document.getElementById('root');
   _reactDom2.default.render(_react2.default.createElement(_root.Root, { store: store }), root);
 });
