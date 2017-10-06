@@ -4,7 +4,8 @@ import values from 'lodash/values';
 import { fetchTasks, saveTasks } from '../../actions/task_actions';
 
 const mapStateToProps = (state) => ({
-  tasks: state.tasks
+  tasks: state.tasks,
+  errors: state.errors
 });
 
 const mapDispatchToProps = (dispatch) => ({
