@@ -27,28 +27,17 @@ export default class TasksIndex extends React.Component {
 
   addTask(e) {
     e.preventDefault();
-    // debugger;
     let newTask = {title: this.state.title};
-    // this.state.names.push(this.state.username);
-  //  console.log(this.state);
-  //  this.props.add([this.state]);
     this.setState({
       tasks: this.state.tasks.concat([newTask])
     });
   }
-  //
-  // componentDidUpdate() {
-  //   this.forceUpdate.bind(this);
-  // }
 
   handleSubmit(e) {
     e.preventDefault();
     let allTasks = this.state.tasks;
-    console.log(allTasks);
+    debugger;
     this.props.saveTasks(allTasks);
-  //   // .then(this.setState({
-  //   //   title: "",
-  //   // }));
   }
 
 

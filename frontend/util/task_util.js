@@ -6,11 +6,14 @@ export const fetchTaskList = () => (
 );
 
 export const saveTaskList = (tasks) => {
+  let taskList = JSON.stringify({"tasks": tasks});
+  console.log(taskList);
   return (
     $.ajax({
       method: 'POST',
       url: 'https://cfassignment.herokuapp.com/julianne/tasks',
-      data: JSON.stringify({tasks})
+      data: taskList,
+      contentType: 'application/json'
     })
   );
 };

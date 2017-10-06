@@ -3590,22 +3590,22 @@ var clearErrors = exports.clearErrors = function clearErrors() {
 var fetchTasks = exports.fetchTasks = function fetchTasks() {
   return function (dispatch) {
     return APIUtil.fetchTaskList().then(function (tasks) {
-      return dispatch(receiveAllTasks(tasks));
+      dispatch(receiveAllTasks(tasks));
+    }, function (err) {
+      return dispatch(fetchTasks());
     });
   };
 };
 
 var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
   return function (dispatch) {
-    APIUtil.saveTaskList(allTasks).then(function (tasks) {
+    return APIUtil.saveTaskList(allTasks).then(function (tasks) {
       dispatch(receiveAllTasks(tasks));
-      // console.log(tasks);
-      // return tasks;
+    }, function (err) {
+      return dispatch(saveTasks(allTasks));
     });
   };
 };
-
-// recursively call thunk action creator on fail
 
 /***/ }),
 /* 29 */
@@ -7195,10 +7195,13 @@ var fetchTaskList = exports.fetchTaskList = function fetchTaskList() {
 };
 
 var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
+  var taskList = JSON.stringify({ "tasks": tasks });
+  console.log(taskList);
   return $.ajax({
     method: 'POST',
     url: 'https://cfassignment.herokuapp.com/julianne/tasks',
-    data: JSON.stringify({ tasks: tasks })
+    data: taskList,
+    contentType: 'application/json'
   });
 };
 
@@ -12333,30 +12336,18 @@ var TasksIndex = function (_React$Component) {
     key: 'addTask',
     value: function addTask(e) {
       e.preventDefault();
-      // debugger;
       var newTask = { title: this.state.title };
-      // this.state.names.push(this.state.username);
-      //  console.log(this.state);
-      //  this.props.add([this.state]);
       this.setState({
         tasks: this.state.tasks.concat([newTask])
       });
     }
-    //
-    // componentDidUpdate() {
-    //   this.forceUpdate.bind(this);
-    // }
-
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
       e.preventDefault();
       var allTasks = this.state.tasks;
-      console.log(allTasks);
+      debugger;
       this.props.saveTasks(allTasks);
-      //   // .then(this.setState({
-      //   //   title: "",
-      //   // }));
     }
   }, {
     key: 'render',
@@ -12579,7 +12570,9 @@ var tasksReducer = exports.tasksReducer = function tasksReducer() {
   Object.freeze(state);
   switch (action.type) {
     case _task_actions.RECEIVE_TASKS:
+      // debugger;
       return action.tasks.tasks;
+    // console.log(action.tasks);
     default:
       return state;
   }

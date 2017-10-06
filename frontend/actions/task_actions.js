@@ -20,15 +20,17 @@ export const clearErrors = () => ({
 });
 
 export const fetchTasks = () => dispatch => (
-  APIUtil.fetchTaskList().then(tasks => dispatch(receiveAllTasks(tasks)))
+  APIUtil.fetchTaskList().then((tasks) => {
+    dispatch(receiveAllTasks(tasks));
+  }, (err) => (
+    dispatch(fetchTasks())
+  ))
 );
 
-export const saveTasks = (allTasks) => dispatch => {
-  APIUtil.saveTaskList(allTasks).then(tasks => {
+export const saveTasks = (allTasks) => dispatch => (
+  APIUtil.saveTaskList(allTasks).then((tasks) => {
     dispatch(receiveAllTasks(tasks));
-    // console.log(tasks);
-    // return tasks;
-  });
-};
-
-// recursively call thunk action creator on fail
+  }, (err) => (
+    dispatch(saveTasks(allTasks))
+  ))
+);
