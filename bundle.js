@@ -14963,7 +14963,7 @@ var TasksIndex = function (_React$Component) {
     value: function renderErrors() {
       return _react2.default.createElement(
         'ul',
-        null,
+        { className: 'errors' },
         this.props.errors.map(function (error, i) {
           return _react2.default.createElement(
             'li',

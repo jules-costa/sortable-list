@@ -142,3 +142,9 @@ button {
   font-size: 11px;
   color: grey;
 }
+
+.errors {
+  margin-top: 10px;
+  font-size: 12px;
+  color: red;
+}

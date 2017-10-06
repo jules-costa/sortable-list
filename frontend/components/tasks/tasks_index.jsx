@@ -104,7 +104,7 @@ class TasksIndex extends React.Component {
 
   renderErrors() {
     return(
-      <ul>
+      <ul className="errors">
         {this.props.errors.map((error, i) => (
           <li key={`error=${i}`}>
             { `${error}, please refresh and try again.` }
