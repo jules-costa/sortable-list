@@ -14705,8 +14705,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// import flow from 'lodash/flow';
-
 var taskSource = {
   beginDrag: function beginDrag(props) {
     return {
@@ -14740,13 +14738,6 @@ var taskTarget = {
     monitor.getItem().index = hoverIndex;
   }
 };
-
-// function collect(connect, monitor) {
-//   return {
-//     connectDragSource: connect.dragSource(),
-//     isDragging: monitor.isDragging()
-//   };
-// }
 
 var TaskIndexItem = function (_React$Component) {
   _inherits(TaskIndexItem, _React$Component);
@@ -14883,6 +14874,9 @@ var TasksIndex = function (_React$Component) {
           $splice: [[dragIndex, 1], [hoverIndex, 0, dragTask]]
         }
       }));
+      this.setState({
+        disabled: false
+      });
     }
   }, {
     key: 'componentDidMount',
@@ -14976,7 +14970,6 @@ var TasksIndex = function (_React$Component) {
     value: function render() {
       var _this4 = this;
 
-      // const { tasks } = this.state;
       return _react2.default.createElement(
         'section',
         { className: 'tasks-list-container' },

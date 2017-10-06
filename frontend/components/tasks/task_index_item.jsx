@@ -2,7 +2,6 @@ import React from 'react';
 import { ItemTypes } from '../constants';
 import { findDOMNode } from 'react-dom';
 import { DragSource, DropTarget } from 'react-dnd';
-// import flow from 'lodash/flow';
 
 const taskSource = {
   beginDrag(props) {
@@ -38,12 +37,6 @@ const taskTarget = {
   }
 };
 
-// function collect(connect, monitor) {
-//   return {
-//     connectDragSource: connect.dragSource(),
-//     isDragging: monitor.isDragging()
-//   };
-// }
 
 class TaskIndexItem extends React.Component {
   constructor(props) {

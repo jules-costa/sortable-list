@@ -34,6 +34,9 @@ class TasksIndex extends React.Component {
         ]
       }
     }));
+    this.setState({
+      disabled: false
+    });
   }
 
   componentDidMount() {
@@ -107,7 +110,6 @@ class TasksIndex extends React.Component {
   }
 
   render() {
-    // const { tasks } = this.state;
     return (
       <section className="tasks-list-container">
         <textarea
