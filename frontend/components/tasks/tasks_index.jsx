@@ -55,7 +55,8 @@ class TasksIndex extends React.Component {
     if (JSON.stringify(this.props.errors) !== JSON.stringify(nextProps.errors)) {
       this.setState({
         alert: true,
-        message: "failure"
+        message: "failure",
+        disabled: false
       });
     } else if (JSON.stringify(this.props.tasks) !== JSON.stringify(nextProps.tasks)) {
       this.setState({
@@ -76,7 +77,6 @@ class TasksIndex extends React.Component {
       disabled: false
     });
   }
-
 
   handleSubmit(e) {
     e.preventDefault();
@@ -101,7 +101,7 @@ class TasksIndex extends React.Component {
       <ul className="errors">
         {this.props.errors.map((error, i) => (
           <li key={`error=${i}`}>
-            { `${error}, please refresh and try again.` }
+            { `${error}, please try again.` }
           </li>
         ))}
       </ul>

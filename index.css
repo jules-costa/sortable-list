@@ -153,10 +153,10 @@ button {
   color: grey;
 }
 
-.errors {
+.errors li {
   margin-top: 10px;
   font-size: 12px;
-  color: red;
+  color: #ef2535;
 }
 
 .banner {

@@ -14913,7 +14913,8 @@ var TasksIndex = function (_React$Component) {
       if (JSON.stringify(this.props.errors) !== JSON.stringify(nextProps.errors)) {
         this.setState({
           alert: true,
-          message: "failure"
+          message: "failure",
+          disabled: false
         });
       } else if (JSON.stringify(this.props.tasks) !== JSON.stringify(nextProps.tasks)) {
         this.setState({
@@ -14970,7 +14971,7 @@ var TasksIndex = function (_React$Component) {
           return _react2.default.createElement(
             'li',
             { key: 'error=' + i },
-            error + ', please refresh and try again.'
+            error + ', please try again.'
           );
         })
       );
