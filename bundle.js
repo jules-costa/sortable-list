@@ -14905,6 +14905,7 @@ var TasksIndex = function (_React$Component) {
           message: ""
         });
       });
+      this.textInput.focus();
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -15024,6 +15025,9 @@ var TasksIndex = function (_React$Component) {
           'div',
           { className: 'new-task-form' },
           _react2.default.createElement('input', {
+            ref: function ref(input) {
+              _this4.textInput = input;
+            },
             type: 'text',
             className: 'new-task',
             placeholder: 'New task',

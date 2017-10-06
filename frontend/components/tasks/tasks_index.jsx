@@ -48,6 +48,7 @@ class TasksIndex extends React.Component {
         message: ""
       })
     ));
+    this.textInput.focus();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -134,6 +135,7 @@ class TasksIndex extends React.Component {
         </div>
         <div className="new-task-form">
           <input
+            ref={ (input) => {this.textInput = input; }}
             type="text"
             className="new-task"
             placeholder="New task"

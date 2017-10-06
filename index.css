@@ -27,6 +27,7 @@ h1 {
 }
 
 textarea,
+input,
 button {
   -webkit-appearance: none;
   -moz-appearance: none;
