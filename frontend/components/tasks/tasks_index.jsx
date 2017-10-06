@@ -13,6 +13,7 @@ export default class TasksIndex extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.update = this.update.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
+    this.displayAlert = this.displayAlert.bind(this);
   }
 
   componentWillMount() {
@@ -28,8 +29,6 @@ export default class TasksIndex extends React.Component {
   }
 
   deleteTask(taskIndex) {
-    console.log(taskIndex);
-    console.log(this.state.tasks);
     this.state.tasks.splice(taskIndex, 1);
     this.setState({
       tasks: this.state.tasks,
@@ -50,12 +49,29 @@ export default class TasksIndex extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let allTasks = this.state.tasks;
-    this.props.saveTasks(allTasks);
+    this.props.saveTasks(allTasks).then((boolean) => {
+      if (boolean === "true") {
+        console.log("success");
+        this.displayAlert("success!");
+      } else {
+        this.displayAlert("failure");
+      }
+    });
   }
 
   hideAlert(e) {
     e.preventDefault();
     e.target.parentElement.style.display='none';
+  }
+
+  displayAlert(message) {
+    console.log(`inside display alert: ${message}`);
+    return(
+      <div className="alert">
+        <span className="closebtn" onClick={this.hideAlert}>&times;</span>
+        `${message}`
+      </div>
+    );
   }
 
   render() {
@@ -70,16 +86,12 @@ export default class TasksIndex extends React.Component {
         </textarea>
         <button className="new-task-button" onClick={this.addTask}>Add Task</button>
         <button className="new-task-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
-
         <ul className="tasks-list">
           {this.state.tasks ? this.state.tasks.map((task, i) =>
             <TaskIndexItem key={task.title} index={i} task={task} tasks={this.props.tasks} deleteTask={this.deleteTask.bind(this)}/>
           ) : ""}
         </ul>
-        <div className="alert">
-          <span className="closebtn" onClick={this.hideAlert}>&times;</span>
-          This is an alert box.
-        </div>
+        {this.displayAlert}
       </section>
     );
   }

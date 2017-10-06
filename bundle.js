@@ -3601,10 +3601,10 @@ var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
   return function (dispatch) {
     return APIUtil.saveTaskList(allTasks).then(function (tasks) {
       dispatch(receiveAllTasks(tasks));
-      alert("Success!");
+      return true;
     }, function (err) {
       dispatch(saveTasks(allTasks));
-      alert("Failure");
+      return false;
     });
   };
 };
@@ -12312,6 +12312,7 @@ var TasksIndex = function (_React$Component) {
     _this.handleSubmit = _this.handleSubmit.bind(_this);
     _this.update = _this.update.bind(_this);
     _this.hideAlert = _this.hideAlert.bind(_this);
+    _this.displayAlert = _this.displayAlert.bind(_this);
     return _this;
   }
 
@@ -12338,8 +12339,6 @@ var TasksIndex = function (_React$Component) {
   }, {
     key: 'deleteTask',
     value: function deleteTask(taskIndex) {
-      console.log(taskIndex);
-      console.log(this.state.tasks);
       this.state.tasks.splice(taskIndex, 1);
       this.setState({
         tasks: this.state.tasks,
@@ -12359,9 +12358,18 @@ var TasksIndex = function (_React$Component) {
   }, {
     key: 'handleSubmit',
     value: function handleSubmit(e) {
+      var _this4 = this;
+
       e.preventDefault();
       var allTasks = this.state.tasks;
-      this.props.saveTasks(allTasks);
+      this.props.saveTasks(allTasks).then(function (boolean) {
+        if (boolean === "true") {
+          console.log("success");
+          _this4.displayAlert("success!");
+        } else {
+          _this4.displayAlert("failure");
+        }
+      });
     }
   }, {
     key: 'hideAlert',
@@ -12370,9 +12378,26 @@ var TasksIndex = function (_React$Component) {
       e.target.parentElement.style.display = 'none';
     }
   }, {
+    key: 'displayAlert',
+    value: function displayAlert(message) {
+      console.log('inside display alert: ' + message);
+      return _react2.default.createElement(
+        'div',
+        { className: 'alert' },
+        _react2.default.createElement(
+          'span',
+          { className: 'closebtn', onClick: this.hideAlert },
+          '\xD7'
+        ),
+        '`$',
+        message,
+        '`'
+      );
+    }
+  }, {
     key: 'render',
     value: function render() {
-      var _this4 = this;
+      var _this5 = this;
 
       return _react2.default.createElement(
         'section',
@@ -12397,19 +12422,10 @@ var TasksIndex = function (_React$Component) {
           'ul',
           { className: 'tasks-list' },
           this.state.tasks ? this.state.tasks.map(function (task, i) {
-            return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this4.props.tasks, deleteTask: _this4.deleteTask.bind(_this4) });
+            return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this5.props.tasks, deleteTask: _this5.deleteTask.bind(_this5) });
           }) : ""
         ),
-        _react2.default.createElement(
-          'div',
-          { className: 'alert' },
-          _react2.default.createElement(
-            'span',
-            { className: 'closebtn', onClick: this.hideAlert },
-            '\xD7'
-          ),
-          'This is an alert box.'
-        )
+        this.displayAlert
       );
     }
   }]);

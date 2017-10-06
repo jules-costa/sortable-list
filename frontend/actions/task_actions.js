@@ -30,9 +30,9 @@ export const fetchTasks = () => dispatch => (
 export const saveTasks = (allTasks) => dispatch => (
   APIUtil.saveTaskList(allTasks).then((tasks) => {
     dispatch(receiveAllTasks(tasks));
-    alert("Success!");
+    return true;
   }, (err) => {
     dispatch(saveTasks(allTasks));
-    alert("Failure");
+    return false;
   })
 );
