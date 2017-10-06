@@ -14890,7 +14890,8 @@ var TasksIndex = function (_React$Component) {
         }
       }));
       this.setState({
-        disabled: false
+        disabled: false,
+        alert: false
       });
     }
   }, {
@@ -14938,7 +14939,8 @@ var TasksIndex = function (_React$Component) {
       this.state.tasks.splice(taskIndex, 1);
       this.setState({
         tasks: this.state.tasks,
-        disabled: false
+        disabled: false,
+        alert: false
       });
     }
   }, {
@@ -14971,7 +14973,7 @@ var TasksIndex = function (_React$Component) {
           return _react2.default.createElement(
             'li',
             { key: 'error=' + i },
-            error + ', please try again.'
+            error + ', please refresh to try again.'
           );
         })
       );
@@ -14984,7 +14986,9 @@ var TasksIndex = function (_React$Component) {
         { className: 'alert ' + message },
         _react2.default.createElement(
           'span',
-          { className: 'closebtn ' + message, onClick: this.hideAlert },
+          {
+            className: 'closebtn ' + message,
+            onClick: this.hideAlert },
           '\xD7'
         ),
         '' + message
@@ -14998,7 +15002,8 @@ var TasksIndex = function (_React$Component) {
       this.setState({
         tasks: [newTask].concat(this.state.tasks),
         disabled: false,
-        title: ""
+        title: "",
+        alert: false
       });
     }
   }, {
@@ -15020,7 +15025,10 @@ var TasksIndex = function (_React$Component) {
           ),
           _react2.default.createElement(
             'button',
-            { className: 'task-button save-button', disabled: this.state.disabled, onClick: this.handleSubmit },
+            {
+              className: 'task-button save-button',
+              disabled: this.state.disabled,
+              onClick: this.handleSubmit },
             'Save'
           )
         ),
@@ -15038,7 +15046,9 @@ var TasksIndex = function (_React$Component) {
             onChange: this.update('title') }),
           _react2.default.createElement(
             'button',
-            { className: 'task-button', onClick: this.addTask },
+            {
+              className: 'task-button',
+              onClick: this.addTask },
             'Add Task'
           )
         ),

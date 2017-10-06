@@ -36,7 +36,8 @@ class TasksIndex extends React.Component {
       }
     }));
     this.setState({
-      disabled: false
+      disabled: false,
+      alert: false
     });
   }
 
@@ -74,7 +75,8 @@ class TasksIndex extends React.Component {
     this.state.tasks.splice(taskIndex, 1);
     this.setState({
       tasks: this.state.tasks,
-      disabled: false
+      disabled: false,
+      alert: false
     });
   }
 
@@ -101,7 +103,7 @@ class TasksIndex extends React.Component {
       <ul className="errors">
         {this.props.errors.map((error, i) => (
           <li key={`error=${i}`}>
-            { `${error}, please try again.` }
+            { `${error}, please refresh to try again.` }
           </li>
         ))}
       </ul>
@@ -111,7 +113,9 @@ class TasksIndex extends React.Component {
   displayAlert(message) {
     return(
       <div className={`alert ${message}`}>
-        <span className={`closebtn ${message}`} onClick={this.hideAlert}>&times;</span>
+        <span
+          className={`closebtn ${message}`}
+          onClick={this.hideAlert}>&times;</span>
         {`${message}`}
       </div>
     );
@@ -123,7 +127,8 @@ class TasksIndex extends React.Component {
     this.setState({
       tasks: [newTask].concat(this.state.tasks),
       disabled: false,
-      title: ""
+      title: "",
+      alert: false
     });
   }
 
@@ -133,7 +138,12 @@ class TasksIndex extends React.Component {
         <div className="banner"></div>
         <div className="navbar">
           <h1>Tasks</h1>
-          <button className="task-button save-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
+          <button
+            className="task-button save-button"
+            disabled={this.state.disabled}
+            onClick={this.handleSubmit}>
+            Save
+          </button>
         </div>
         <div className="new-task-form">
           <input
@@ -144,7 +154,11 @@ class TasksIndex extends React.Component {
             value={this.state.title}
             onChange={this.update('title')}>
           </input>
-          <button className="task-button" onClick={this.addTask}>Add Task</button>
+          <button
+            className="task-button"
+            onClick={this.addTask}>
+            Add Task
+          </button>
         </div>
         {this.renderErrors()}
         <ul className="tasks-list">

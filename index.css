@@ -1,6 +1,6 @@
 html, body, header, nav, h1, a,
 ul, li, main, button, i,
-section, div, textarea,
+section, div, input,
 span {
   margin: 0;
   padding: 0;
@@ -27,7 +27,7 @@ h1 {
 }
 
 textarea,
-input,
+input[type="text"],
 button {
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -119,7 +119,7 @@ button {
   border-radius: 4px;
   font-size: 14px;
   position: absolute;
-  right: 20px;
+  right: 40vh;
   top: 220px;
 }
 
