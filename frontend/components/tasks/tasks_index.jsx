@@ -20,6 +20,7 @@ class TasksIndex extends React.Component {
     this.update = this.update.bind(this);
     this.hideAlert = this.hideAlert.bind(this);
     this.displayAlert = this.displayAlert.bind(this);
+    this.renderErrors = this.renderErrors.bind(this);
   }
 
   moveTask(dragIndex, hoverIndex) {
@@ -50,7 +51,7 @@ class TasksIndex extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.errors.length !== nextProps.errors.length) {
+    if (JSON.stringify(this.props.errors) !== JSON.stringify(nextProps.errors)) {
       this.setState({
         alert: true,
         message: "failure"
@@ -100,6 +101,18 @@ class TasksIndex extends React.Component {
     });
   }
 
+  renderErrors() {
+    return(
+      <ul>
+        {this.props.errors.map((error, i) => (
+          <li key={`error=${i}`}>
+            { `${error}, please try again.` }
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
   displayAlert(message) {
     return(
       <div className="alert">
@@ -133,6 +146,7 @@ class TasksIndex extends React.Component {
               />
           ) : ""}
         </ul>
+        {this.renderErrors()}
         {this.state.alert ? this.displayAlert(this.state.message) : ""}
       </section>
     );

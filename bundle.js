@@ -5682,7 +5682,7 @@ var fetchTasks = exports.fetchTasks = function fetchTasks() {
       dispatch(receiveAllTasks(tasks));
       dispatch(clearErrors());
     }, function (err) {
-      dispatch(receiveErrors(err));
+      dispatch(receiveErrors(err.responseJSON));
     });
   };
 };
@@ -5693,7 +5693,7 @@ var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
       dispatch(receiveAllTasks(tasks));
       dispatch(clearErrors());
     }, function (err) {
-      dispatch(receiveErrors(err));
+      dispatch(receiveErrors(err.responseJSON));
     });
   };
 };
@@ -14859,6 +14859,7 @@ var TasksIndex = function (_React$Component) {
     _this.update = _this.update.bind(_this);
     _this.hideAlert = _this.hideAlert.bind(_this);
     _this.displayAlert = _this.displayAlert.bind(_this);
+    _this.renderErrors = _this.renderErrors.bind(_this);
     return _this;
   }
 
@@ -14894,7 +14895,7 @@ var TasksIndex = function (_React$Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      if (this.props.errors.length !== nextProps.errors.length) {
+      if (JSON.stringify(this.props.errors) !== JSON.stringify(nextProps.errors)) {
         this.setState({
           alert: true,
           message: "failure"
@@ -14952,6 +14953,21 @@ var TasksIndex = function (_React$Component) {
       });
     }
   }, {
+    key: 'renderErrors',
+    value: function renderErrors() {
+      return _react2.default.createElement(
+        'ul',
+        null,
+        this.props.errors.map(function (error, i) {
+          return _react2.default.createElement(
+            'li',
+            { key: 'error=' + i },
+            error + ', please try again.'
+          );
+        })
+      );
+    }
+  }, {
     key: 'displayAlert',
     value: function displayAlert(message) {
       return _react2.default.createElement(
@@ -15003,6 +15019,7 @@ var TasksIndex = function (_React$Component) {
             });
           }) : ""
         ),
+        this.renderErrors(),
         this.state.alert ? this.displayAlert(this.state.message) : ""
       );
     }
@@ -15133,7 +15150,8 @@ var errorsReducer = exports.errorsReducer = function errorsReducer() {
   Object.freeze(state);
   switch (action.type) {
     case _task_actions.RECEIVE_ERRORS:
-      return action.errors;
+      // debugger
+      return [action.errors["error"]];
     case _task_actions.CLEAR_ERRORS:
       return [];
     default:

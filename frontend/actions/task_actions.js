@@ -24,7 +24,7 @@ export const fetchTasks = () => dispatch => (
     dispatch(receiveAllTasks(tasks));
     dispatch(clearErrors());
   }, (err) => {
-    dispatch(receiveErrors(err));
+    dispatch(receiveErrors(err.responseJSON));
   })
 );
 
@@ -33,6 +33,6 @@ export const saveTasks = (allTasks) => dispatch => (
     dispatch(receiveAllTasks(tasks));
     dispatch(clearErrors());
   }, (err) => {
-    dispatch(receiveErrors(err));
+    dispatch(receiveErrors(err.responseJSON));
   })
 );
