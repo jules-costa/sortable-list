@@ -81,9 +81,9 @@ class TasksIndex extends React.Component {
     let newTask = {title: this.state.title};
     this.setState({
       tasks: [newTask].concat(this.state.tasks),
-      disabled: false
+      disabled: false,
+      title: ""
     });
-
   }
 
   handleSubmit(e) {
@@ -97,7 +97,8 @@ class TasksIndex extends React.Component {
     e.target.parentElement.style.display='none';
     this.setState({
       alert: false,
-      message: ""
+      message: "",
+      disabled: true
     });
   }
 
@@ -106,7 +107,7 @@ class TasksIndex extends React.Component {
       <ul>
         {this.props.errors.map((error, i) => (
           <li key={`error=${i}`}>
-            { `${error}, please try again.` }
+            { `${error}, please refresh and try again.` }
           </li>
         ))}
       </ul>
@@ -125,15 +126,21 @@ class TasksIndex extends React.Component {
   render() {
     return (
       <section className="tasks-list-container">
-        <textarea
-          type="text"
-          className="new-task"
-          placeholder="New task"
-          value={this.state.title}
-          onChange={this.update('title')}>
-        </textarea>
-        <button className="new-task-button" onClick={this.addTask}>Add Task</button>
-        <button className="new-task-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
+        <div className="navbar">
+          <h1>Tasks</h1>
+          <textarea
+            type="text"
+            className="new-task"
+            placeholder="New task"
+            value={this.state.title}
+            onChange={this.update('title')}>
+          </textarea>
+          <div className="buttons">
+            <button className="task-button" onClick={this.addTask}>Add Task</button>
+            <button className="task-button save-button" disabled={this.state.disabled} onClick={this.handleSubmit}>Save</button>
+          </div>
+        </div>
+        {this.renderErrors()}
         <ul className="tasks-list">
           {this.state.tasks ? this.state.tasks.map((task, i) =>
             <TaskIndexItem
@@ -146,7 +153,6 @@ class TasksIndex extends React.Component {
               />
           ) : ""}
         </ul>
-        {this.renderErrors()}
         {this.state.alert ? this.displayAlert(this.state.message) : ""}
       </section>
     );

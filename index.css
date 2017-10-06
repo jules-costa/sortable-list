@@ -1,8 +1,119 @@
+html, body, header, nav, h1, a,
+ul, li, main, button, i,
+section, div, textarea,
+span {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-family: Arial;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: inherit;
+  vertical-align: inherit;
+  box-sizing: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+textarea,
+button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+button {
+  cursor: pointer;
+  background-color: white;
+}
+
+.tasks-list-container {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  align-items: center;
+  background-color: aliceblue;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  width: 500px;
+  align-items: flex-end;
+}
+
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 500px;
+  border: 1px solid lightgrey;
+  padding: 10px 12px 80px 12px;
+  margin-bottom: 10px;
+  background-color: white;
+  color: grey;
+}
+
+.new-task {
+  border: 1px solid lightgrey;
+  border-radius: 4px;
+  width: 250px;
+  padding: 6px 0 0 6px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 130px;
+  margin-top: 20px;
+}
+
+.task-button {
+  border-radius: 4px;
+  padding: 8px 12px;
+  background-color: lightslategrey;
+  color: white;
+  font-size: 12px;
+}
+
+.save-button {
+  background-color: mediumseagreen;
+}
+
+.save-button:disabled {
+  background-color: lightslategrey;
+  cursor: auto;
+}
+
+.delete-button {
+  font-size: 14px;
+  color: grey;
+}
+
 .alert {
-    padding: 20px;
-    background-color: #f44336;
-    color: white;
-    margin-bottom: 15px;
+  padding: 8px 12px;
+  background-color: cornflowerblue;
+  opacity: 0.8;
+  color: white;
+  width: 300px;
+  border-radius: 4px;
+  font-size: 20px;
 }
 
 .closebtn {
@@ -18,4 +129,15 @@
 
 .closebtn:hover {
     color: black;
+}
+
+.left-content {
+  display: flex;
+  align-items: center;
+}
+
+.fa-bars {
+  padding-right: 6px;
+  font-size: 11px;
+  color: grey;
 }

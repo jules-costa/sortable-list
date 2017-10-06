@@ -14763,13 +14763,17 @@ var TaskIndexItem = function (_React$Component) {
 
       return connectDragSource(connectDropTarget(_react2.default.createElement(
         'li',
-        { style: {
+        { className: 'task', style: {
             opacity: isDragging ? 0.5 : 1,
-            fontSize: 25,
-            fontWeight: 'bold',
+            fontSize: 14,
             cursor: 'move'
           } },
-        task.title,
+        _react2.default.createElement(
+          'div',
+          { className: 'left-content' },
+          _react2.default.createElement('i', { className: 'fa fa-bars', 'aria-hidden': 'true' }),
+          task.title
+        ),
         _react2.default.createElement(
           'button',
           { className: 'delete-button', onClick: function onClick() {
@@ -14932,7 +14936,8 @@ var TasksIndex = function (_React$Component) {
       var newTask = { title: this.state.title };
       this.setState({
         tasks: [newTask].concat(this.state.tasks),
-        disabled: false
+        disabled: false,
+        title: ""
       });
     }
   }, {
@@ -14949,7 +14954,8 @@ var TasksIndex = function (_React$Component) {
       e.target.parentElement.style.display = 'none';
       this.setState({
         alert: false,
-        message: ""
+        message: "",
+        disabled: true
       });
     }
   }, {
@@ -14962,7 +14968,7 @@ var TasksIndex = function (_React$Component) {
           return _react2.default.createElement(
             'li',
             { key: 'error=' + i },
-            error + ', please try again.'
+            error + ', please refresh and try again.'
           );
         })
       );
@@ -14989,22 +14995,36 @@ var TasksIndex = function (_React$Component) {
       return _react2.default.createElement(
         'section',
         { className: 'tasks-list-container' },
-        _react2.default.createElement('textarea', {
-          type: 'text',
-          className: 'new-task',
-          placeholder: 'New task',
-          value: this.state.title,
-          onChange: this.update('title') }),
         _react2.default.createElement(
-          'button',
-          { className: 'new-task-button', onClick: this.addTask },
-          'Add Task'
+          'div',
+          { className: 'navbar' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Tasks'
+          ),
+          _react2.default.createElement('textarea', {
+            type: 'text',
+            className: 'new-task',
+            placeholder: 'New task',
+            value: this.state.title,
+            onChange: this.update('title') }),
+          _react2.default.createElement(
+            'div',
+            { className: 'buttons' },
+            _react2.default.createElement(
+              'button',
+              { className: 'task-button', onClick: this.addTask },
+              'Add Task'
+            ),
+            _react2.default.createElement(
+              'button',
+              { className: 'task-button save-button', disabled: this.state.disabled, onClick: this.handleSubmit },
+              'Save'
+            )
+          )
         ),
-        _react2.default.createElement(
-          'button',
-          { className: 'new-task-button', disabled: this.state.disabled, onClick: this.handleSubmit },
-          'Save'
-        ),
+        this.renderErrors(),
         _react2.default.createElement(
           'ul',
           { className: 'tasks-list' },
@@ -15019,7 +15039,6 @@ var TasksIndex = function (_React$Component) {
             });
           }) : ""
         ),
-        this.renderErrors(),
         this.state.alert ? this.displayAlert(this.state.message) : ""
       );
     }

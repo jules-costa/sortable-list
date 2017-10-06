@@ -47,13 +47,15 @@ class TaskIndexItem extends React.Component {
     const { task, index, connectDragSource, isDragging, connectDropTarget } = this.props;
 
     return connectDragSource(connectDropTarget(
-      <li style={{
+      <li className="task" style={{
         opacity: isDragging ? 0.5 : 1,
-        fontSize: 25,
-        fontWeight: 'bold',
+        fontSize: 14,
         cursor: 'move'
       }}>
-        {task.title}
+        <div className="left-content">
+          <i className="fa fa-bars" aria-hidden="true"></i>
+          {task.title}
+        </div>
         <button className="delete-button" onClick={() => this.props.deleteTask(index)}>
           <i className="fa fa-trash-o" aria-hidden="true"></i>
         </button>
