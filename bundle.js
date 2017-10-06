@@ -7196,7 +7196,6 @@ var fetchTaskList = exports.fetchTaskList = function fetchTaskList() {
 
 var saveTaskList = exports.saveTaskList = function saveTaskList(tasks) {
   var taskList = JSON.stringify({ "tasks": tasks });
-  console.log(taskList);
   return $.ajax({
     method: 'POST',
     url: 'https://cfassignment.herokuapp.com/julianne/tasks',
@@ -12346,13 +12345,12 @@ var TasksIndex = function (_React$Component) {
     value: function handleSubmit(e) {
       e.preventDefault();
       var allTasks = this.state.tasks;
-      debugger;
       this.props.saveTasks(allTasks);
     }
   }, {
     key: 'render',
     value: function render() {
-      var tasks = this.props.tasks;
+      var _this4 = this;
 
       return _react2.default.createElement(
         'section',
@@ -12377,7 +12375,7 @@ var TasksIndex = function (_React$Component) {
           'ul',
           { className: 'tasks-list' },
           this.state.tasks ? this.state.tasks.map(function (task, i) {
-            return _react2.default.createElement(_task_index_item2.default, { key: task.title, task: task });
+            return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this4.props.tasks });
           }) : ""
         )
       );
@@ -12570,9 +12568,7 @@ var tasksReducer = exports.tasksReducer = function tasksReducer() {
   Object.freeze(state);
   switch (action.type) {
     case _task_actions.RECEIVE_TASKS:
-      // debugger;
       return action.tasks.tasks;
-    // console.log(action.tasks);
     default:
       return state;
   }
@@ -28102,27 +28098,48 @@ var TaskIndexItem = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
 
+    _this.state = {
+      tasks: _this.props.tasks
+    };
+
     _this.deleteTask = _this.deleteTask.bind(_this);
     return _this;
   }
 
+  // componentWillMount() {
+  //   this.props.fetchTasks().then((tasks) => (
+  //     this.setState({
+  //       tasks: [...this.props.tasks]
+  //     })
+  //   ));
+  // }
+
   _createClass(TaskIndexItem, [{
     key: "deleteTask",
-    value: function deleteTask(e) {
-      e.preventDefault();
+    value: function deleteTask(taskIndex) {
+      console.log(taskIndex);
+      console.log(this.state.tasks);
+      this.setState({
+        tasks: this.state.tasks.splice(taskIndex, 1)
+      });
     }
   }, {
     key: "render",
     value: function render() {
+      var _this2 = this;
+
       var task = this.props.task;
 
+      console.log(this.props);
       return _react2.default.createElement(
         "li",
         null,
         task.title,
         _react2.default.createElement(
           "button",
-          { className: "delete-button", onClick: this.deleteTask },
+          { className: "delete-button", onClick: function onClick() {
+              return _this2.deleteTask(_this2.props.index);
+            } },
           _react2.default.createElement("i", { className: "fa fa-trash-o", "aria-hidden": "true" })
         )
       );

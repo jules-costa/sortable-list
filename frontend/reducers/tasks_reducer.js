@@ -5,9 +5,7 @@ export const tasksReducer = (state = [], action) => {
   Object.freeze(state);
   switch (action.type) {
     case RECEIVE_TASKS:
-    // debugger;
       return action.tasks.tasks;
-      // console.log(action.tasks);
     default:
       return state;
   }

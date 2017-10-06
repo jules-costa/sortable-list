@@ -36,13 +36,11 @@ export default class TasksIndex extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     let allTasks = this.state.tasks;
-    debugger;
     this.props.saveTasks(allTasks);
   }
 
 
   render() {
-    const { tasks } = this.props;
     return (
       <section className="tasks-list-container">
         <textarea
@@ -56,7 +54,7 @@ export default class TasksIndex extends React.Component {
         <button className="new-task-button" onClick={this.handleSubmit}>Save</button>
 
         <ul className="tasks-list">
-          {this.state.tasks ? this.state.tasks.map((task, i) => <TaskIndexItem key={task.title} task={task} />) : ""}
+          {this.state.tasks ? this.state.tasks.map((task, i) => <TaskIndexItem key={task.title} index={i} task={task} tasks={this.props.tasks}/>) : ""}
         </ul>
       </section>
     );

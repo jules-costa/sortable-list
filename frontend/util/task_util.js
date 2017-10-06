@@ -7,7 +7,6 @@ export const fetchTaskList = () => (
 
 export const saveTaskList = (tasks) => {
   let taskList = JSON.stringify({"tasks": tasks});
-  console.log(taskList);
   return (
     $.ajax({
       method: 'POST',
