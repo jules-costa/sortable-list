@@ -14995,6 +14995,7 @@ var TasksIndex = function (_React$Component) {
       return _react2.default.createElement(
         'section',
         { className: 'tasks-list-container' },
+        _react2.default.createElement('div', { className: 'banner' }),
         _react2.default.createElement(
           'div',
           { className: 'navbar' },

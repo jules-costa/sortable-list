@@ -126,6 +126,7 @@ class TasksIndex extends React.Component {
   render() {
     return (
       <section className="tasks-list-container">
+        <div className="banner"></div>
         <div className="navbar">
           <h1>Tasks</h1>
           <textarea
