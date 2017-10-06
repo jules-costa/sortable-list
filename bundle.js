@@ -12332,6 +12332,16 @@ var TasksIndex = function (_React$Component) {
       };
     }
   }, {
+    key: 'deleteTask',
+    value: function deleteTask(taskIndex) {
+      console.log(taskIndex);
+      console.log(this.state.tasks);
+      this.state.tasks.splice(taskIndex, 1);
+      this.setState({
+        tasks: this.state.tasks
+      });
+    }
+  }, {
     key: 'addTask',
     value: function addTask(e) {
       e.preventDefault();
@@ -12375,7 +12385,7 @@ var TasksIndex = function (_React$Component) {
           'ul',
           { className: 'tasks-list' },
           this.state.tasks ? this.state.tasks.map(function (task, i) {
-            return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this4.props.tasks });
+            return _react2.default.createElement(_task_index_item2.default, { key: task.title, index: i, task: task, tasks: _this4.props.tasks, deleteTask: _this4.deleteTask.bind(_this4) });
           }) : ""
         )
       );
@@ -28096,41 +28106,18 @@ var TaskIndexItem = function (_React$Component) {
   function TaskIndexItem(props) {
     _classCallCheck(this, TaskIndexItem);
 
-    var _this = _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
-
-    _this.state = {
-      tasks: _this.props.tasks
-    };
-
-    _this.deleteTask = _this.deleteTask.bind(_this);
-    return _this;
+    return _possibleConstructorReturn(this, (TaskIndexItem.__proto__ || Object.getPrototypeOf(TaskIndexItem)).call(this, props));
   }
 
-  // componentWillMount() {
-  //   this.props.fetchTasks().then((tasks) => (
-  //     this.setState({
-  //       tasks: [...this.props.tasks]
-  //     })
-  //   ));
-  // }
-
   _createClass(TaskIndexItem, [{
-    key: "deleteTask",
-    value: function deleteTask(taskIndex) {
-      console.log(taskIndex);
-      console.log(this.state.tasks);
-      this.setState({
-        tasks: this.state.tasks.splice(taskIndex, 1)
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      var task = this.props.task;
+      var _props = this.props,
+          task = _props.task,
+          index = _props.index;
 
-      console.log(this.props);
       return _react2.default.createElement(
         "li",
         null,
@@ -28138,7 +28125,7 @@ var TaskIndexItem = function (_React$Component) {
         _react2.default.createElement(
           "button",
           { className: "delete-button", onClick: function onClick() {
-              return _this2.deleteTask(_this2.props.index);
+              return _this2.props.deleteTask(index);
             } },
           _react2.default.createElement("i", { className: "fa fa-trash-o", "aria-hidden": "true" })
         )

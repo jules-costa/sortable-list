@@ -25,6 +25,15 @@ export default class TasksIndex extends React.Component {
     return (e) => this.setState({ [field] : e.target.value });
   }
 
+  deleteTask(taskIndex) {
+    console.log(taskIndex);
+    console.log(this.state.tasks);
+    this.state.tasks.splice(taskIndex, 1);
+    this.setState({
+      tasks: this.state.tasks
+    });
+  }
+
   addTask(e) {
     e.preventDefault();
     let newTask = {title: this.state.title};
@@ -54,7 +63,9 @@ export default class TasksIndex extends React.Component {
         <button className="new-task-button" onClick={this.handleSubmit}>Save</button>
 
         <ul className="tasks-list">
-          {this.state.tasks ? this.state.tasks.map((task, i) => <TaskIndexItem key={task.title} index={i} task={task} tasks={this.props.tasks}/>) : ""}
+          {this.state.tasks ? this.state.tasks.map((task, i) =>
+            <TaskIndexItem key={task.title} index={i} task={task} tasks={this.props.tasks} deleteTask={this.deleteTask.bind(this)}/>
+          ) : ""}
         </ul>
       </section>
     );
