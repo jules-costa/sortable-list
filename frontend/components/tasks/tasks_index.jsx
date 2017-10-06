@@ -21,7 +21,9 @@ export default class TasksIndex extends React.Component {
   componentDidMount() {
     this.props.fetchTasks().then((tasks) => (
       this.setState({
-        tasks: [...this.props.tasks]
+        tasks: [...this.props.tasks],
+        alert: false,
+        message: ""
       })
     ));
   }

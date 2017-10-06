@@ -22,9 +22,11 @@ export const clearErrors = () => ({
 export const fetchTasks = () => dispatch => (
   APIUtil.fetchTaskList().then((tasks) => {
     dispatch(receiveAllTasks(tasks));
-  }, (err) => (
-    dispatch(fetchTasks())
-  ))
+    dispatch(clearErrors());
+  }, (err) => {
+    dispatch(receiveErrors(err));
+    // dispatch(fetchTasks())
+  })
 );
 
 export const saveTasks = (allTasks) => dispatch => (
@@ -32,7 +34,7 @@ export const saveTasks = (allTasks) => dispatch => (
     dispatch(receiveAllTasks(tasks));
     dispatch(clearErrors());
   }, (err) => {
-    dispatch(saveTasks(allTasks));
+    // dispatch(saveTasks(allTasks));
     dispatch(receiveErrors(err));
   })
 );

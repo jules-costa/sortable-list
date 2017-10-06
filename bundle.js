@@ -6024,8 +6024,10 @@ var fetchTasks = exports.fetchTasks = function fetchTasks() {
   return function (dispatch) {
     return APIUtil.fetchTaskList().then(function (tasks) {
       dispatch(receiveAllTasks(tasks));
+      dispatch(clearErrors());
     }, function (err) {
-      return dispatch(fetchTasks());
+      dispatch(receiveErrors(err));
+      // dispatch(fetchTasks())
     });
   };
 };
@@ -6036,7 +6038,7 @@ var saveTasks = exports.saveTasks = function saveTasks(allTasks) {
       dispatch(receiveAllTasks(tasks));
       dispatch(clearErrors());
     }, function (err) {
-      dispatch(saveTasks(allTasks));
+      // dispatch(saveTasks(allTasks));
       dispatch(receiveErrors(err));
     });
   };
@@ -14905,7 +14907,9 @@ var TasksIndex = function (_React$Component) {
 
       this.props.fetchTasks().then(function (tasks) {
         return _this2.setState({
-          tasks: [].concat(_toConsumableArray(_this2.props.tasks))
+          tasks: [].concat(_toConsumableArray(_this2.props.tasks)),
+          alert: false,
+          message: ""
         });
       });
     }
