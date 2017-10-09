@@ -14915,7 +14915,7 @@ var TasksIndex = function (_React$Component) {
             {
               className: 'task-button',
               onClick: this.addTask },
-            'Add Task'
+            'New Task'
           )
         ),
         this.renderErrors(),

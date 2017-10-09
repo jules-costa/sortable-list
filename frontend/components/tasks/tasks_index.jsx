@@ -157,7 +157,7 @@ class TasksIndex extends React.Component {
           <button
             className="task-button"
             onClick={this.addTask}>
-            Add Task
+            New Task
           </button>
         </div>
         {this.renderErrors()}
