@@ -6,7 +6,9 @@ React, Redux, Webpack, Babel, HTML5, CSS3
 
 ### Description
 
- Tasks are fetched when the `TasksIndex` component mounts, and tasks are stored in state to be passed to each `TaskIndexItem`. Each `TaskIndexItem` is wrapped in both `DragSource` and `DropTarget`, provided by `react-dnd`.
+Run `npm run webpack` and then `open index.html` to view this project.
+
+Tasks are fetched when the `TasksIndex` component mounts, and tasks are stored in state to be passed to each `TaskIndexItem`. Each `TaskIndexItem` is wrapped in both `DragSource` and `DropTarget`, provided by `react-dnd`.
 
 ### Challenges
 
